@@ -53,6 +53,9 @@ class RegistrantController extends Controller
             'address' => $request['address'],
             'residence_country_id' => $request['residence_country_id'],
             'languages_spoken' => $request['languages_spoken'],
+            'passport_number' => $request['passport_number'],
+            'issue_date' => $request['issue_date'],
+            'expiry_date' => $request['expiry_date'],
             'emergency_contacts_name' => $request['emergency_contacts_name'],
             'emergency_contacts_relationship' => $request['emergency_contacts_relationship'],
             'emergency_contacts_phone_number' => $request['emergency_contacts_phone_number'],
@@ -145,8 +148,8 @@ class RegistrantController extends Controller
 
         session(['room' => $room->name]);
         session(['room_id' => $room->id]);
-            Payment::makePayment($reg->email, $room->price, 'registrant_complete');
-//        Payment::makePayment($reg->email, 10, 'registrant_complete_return');
+//            Payment::makePayment($reg->email, $room->price, 'registrant_complete');
+        Payment::makePayment($reg->email, 10, 'registrant_complete_return');
     }
 
     public function registrationCompleteReturn(Request $request)

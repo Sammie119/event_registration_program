@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
                 <h4>Registration Fee</h4>
-                <p>The registration fee is USD 50, which includes all conference materials and conference tags.</p>
+                <p>The registration fee is USD 50 and covers all conference benefits, excluding accommodation.</p>
                 <h4>Accommodation Categories and Fee</h4>
                 <table class="table">
                     <thead>
@@ -31,9 +31,11 @@
                         @foreach($rooms as $key => $room)
                             <tr>
                                 <th scope="row">{{ ++$key }}</th>
-                                <td>{{ $room->name }}</td>
+                                <td>{!! nl2br($room->name) !!}</td>
                                 <td>{!! nl2br($room->details) !!}</td>
-                                <td>USD {{ $room->price }}</td>
+                                <td>USD {{ $room->price }} <br>
+                                (For 4 Nights)
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

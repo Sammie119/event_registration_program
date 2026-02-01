@@ -18,6 +18,10 @@
                 <img src="https://letafricago.org/extensions/uploads/sites/522/2024/11/logo-removebg-preview.png" alt="">
             </a>
         </div><!-- End Logo -->
+        <div class="d-flex justify-content-center">
+            <h3>LET AFRICA GO CONFERENCE 2026</h3>
+        </div>
+
         <div class="pagetitle mb-4">
             <h1>Registration Form</h1>
         </div><!-- End Page Title -->
@@ -76,12 +80,14 @@
                                                 />
                                             </div>
                                             <div class="col-md-3">
-                                                <x-input-text
-                                                    type="date"
+                                                <x-input-select
+                                                    :options="['35 years and below', '36 to 50 years', '51 to 65 years', 'Above 65 years']"
+                                                    :selected="3"
                                                     name="date_of_birth"
-                                                    required=""
-                                                    label="Date of Birth"
-                                                    value=""
+                                                    :type="1"
+                                                    :values="['35 years and below', '36 to 50 years', '51 to 65 years', 'Above 65 years']"
+                                                    required="true"
+                                                    label="Age Group"
                                                 />
                                             </div>
                                             <div class="col-3">
@@ -113,6 +119,7 @@
                                                     value=""
                                                 />
                                             </div>
+
                                             <div class="col-md-3">
                                                 <x-input-text
                                                     type="tel"
@@ -165,6 +172,34 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Other Information</h5>
                                         <div class="row g-3">
+                                            <div class="col-md-3">
+                                                <x-input-text
+                                                    type="text"
+                                                    name="passport_number"
+                                                    required=""
+                                                    label="Passport Number"
+                                                    value=""
+                                                />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <x-input-text
+                                                    type="date"
+                                                    name="issue_date"
+                                                    required=""
+                                                    label="Issue Date"
+                                                    value=""
+                                                />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <x-input-text
+                                                    type="date"
+                                                    name="expiry_date"
+                                                    required=""
+                                                    label="Expiry Date"
+                                                    value=""
+                                                />
+                                            </div>
+
                                             <div class="col-md-3">
                                                 <x-input-select
                                                     :options="$nations"
@@ -232,7 +267,7 @@
                                                     label="Do you have a Disability?"
                                                 />
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-9">
                                                 <x-input-text
                                                     type="text"
                                                     name="special_needs"

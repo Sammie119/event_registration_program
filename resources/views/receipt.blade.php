@@ -39,6 +39,10 @@
                 <img src="https://letafricago.org/extensions/uploads/sites/522/2024/11/logo-removebg-preview.png" alt="">
             </a>
         </div><!-- End Logo -->
+        <div class="d-flex justify-content-center">
+            <h3>LET AFRICA GO CONFERENCE 2026</h3>
+        </div>
+
         <div class="pagetitle mb-4 row">
             <div class="col-md-6">
                 <h1 style="text-align: left">Receipt {{ str_pad($payment->id, 4, '0', STR_PAD_LEFT) }}</h1>
