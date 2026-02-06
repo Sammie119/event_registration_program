@@ -10,6 +10,7 @@ class Payment
     public static function makePayment($email, $amount, $callback_url)
     {
 //        $amount = ceil(Utils::exchange_rate($amount) * 100);
+        $amount = ceil(($amount * 12.5) * 100);
 
         $url = config('services.paystack.payment_url');
 
