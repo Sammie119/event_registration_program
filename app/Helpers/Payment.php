@@ -17,7 +17,7 @@ class Payment
             'email' => $email,
             'amount' => $amount,
             'subaccount' => "ACCT_f4kp67u7sbtd0x8",
-            'callback_url' => route($callback_url),
+            'callback_url' => route("$callback_url"),
         ];
 
         $fields_string = http_build_query($fields);

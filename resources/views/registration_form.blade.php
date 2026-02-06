@@ -207,7 +207,7 @@
                                                     name="residence_country_id"
                                                     :type="0"
                                                     required="true"
-                                                    label="Country of Resident"
+                                                    label="Country of Residence"
                                                 />
                                             </div>
                                             <div class="col-md-3">

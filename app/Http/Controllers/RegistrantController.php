@@ -22,13 +22,13 @@ class RegistrantController extends Controller
      */
     public function index()
     {
-        $request['title'] = Utils::getLookups(22);
-        $request['gender'] = Utils::getLookups(2);
-        $request['marital_status'] = Utils::getLookups(3);
-        $request['profession'] = Utils::getLookups(10);
-        $request['nations'] = Country::orderBy('name', 'asc')->get();
+        $data['title'] = Utils::getLookups(22);
+        $data['gender'] = Utils::getLookups(2);
+        $data['marital_status'] = Utils::getLookups(3);
+        $data['profession'] = Utils::getLookups(10);
+        $data['nations'] = Country::orderBy('name', 'asc')->get();
 
-        return view('registration_form', $request);
+        return view('registration_form', $data);
     }
 
     /**
@@ -138,54 +138,64 @@ class RegistrantController extends Controller
      */
     public function registrationComplete(Request $request)
     {
-        session(['food' => $request['food_preference']]);
         $reg = Registrant::find($request['reg_id']);
         $room = Room::find($request['room_id']);
+
+        $payment = OnlinePayment::where('reg_id', $request['reg_id'])->first();
 
         if ($room->occupants_left == 0) {
             return back()->with('error', "Room is not available at the moment.");
         }
 
-        session(['room' => $room->name]);
-        session(['room_id' => $room->id]);
-//            Payment::makePayment($reg->email, $room->price, 'registrant_complete');
-        Payment::makePayment($reg->email, 10, 'registrant_complete_return');
+        if(is_null($payment->accommodation_type)) {
+            if($payment){
+                OnlinePayment::find($payment->id)->update([
+                    'accommodation_type' => $room->slug,
+                    'special_food' => $request['food_preference'],
+                ]);
+            }
+        }
+
+        Payment::makePayment($reg->email, $room->price, 'registrant_complete');
+//        Payment::makePayment($reg->email, 10, 'registrant_complete_return');
+
+//        return redirect(route('registrant_complete_return', absolute: false))->with("success", "Successful!!!.");
     }
 
     public function registrationCompleteReturn(Request $request)
     {
-        $response = (new PayStackPayment())->verifyTransaction($request['reference']);
+        if(isset($request['reference'])){
+            $response = (new PayStackPayment())->verifyTransaction($request['reference']);
 
+            if ($response['status'] && $response['data']['status'] === 'success') {
+                $paymentDetails = $response['data'];
 
-        if ($response['status'] && $response['data']['status'] === 'success') {
-            $paymentDetails = $response['data'];
+                $data = Registrant::where('email', $paymentDetails['customer']['email'])->first();
 
-            $data = Registrant::where('email', $paymentDetails['customer']['email'])->first();
+                $payment = OnlinePayment::where('reg_id', $data->id)->first();
 
-            $payment = OnlinePayment::where('reg_id', $data->id)->first();
+                if($payment->accommodation_fee <= 0) {
+                    if($payment){
+                        OnlinePayment::find($payment->id)->update([
+                            'accommodation_fee' => $paymentDetails['amount'] / 100,
+                        ]);
+                    }
 
-            if(is_null($payment->accommodation_type)) {
-                if($payment){
-                    $food = Session::get('food');
-                    $room = Session::get('room');
-                    $room_id = Session::get('room_id');
-                    OnlinePayment::find($payment->id)->update([
-                        'accommodation_type' => "$room",
-                        'accommodation_fee' => $paymentDetails['amount'] / 100,
-                        'special_food' => $food,
-                    ]);
+                    $room = Room::where('slug',$payment->accommodation_type)->first();
+
+                    if ($room->occupants_left > 0) {
+                        $room->decrement('occupants_left');
+                    }
                 }
 
-                $room = Room::findOrFail($room_id);
+                $detail = OnlinePayment::find($payment->id);
 
-                if ($room->occupants_left > 0) {
-                    $room->decrement('occupants_left');
-                }
+                return view('receipt', ['data' => $data, 'payment' => $detail]);
             }
-
-            return view('receipt', ['data' => $data, 'payment' => $payment]);
+        } else {
+            return "No Receipt Found";
         }
-
+        return null;
 //        return view('receipt');
 //        return redirect(route('registrant.index', absolute: false));
 
