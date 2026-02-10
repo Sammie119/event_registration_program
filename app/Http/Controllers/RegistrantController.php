@@ -71,8 +71,10 @@ class RegistrantController extends Controller
 //            WhatsappNotificationJob::dispatch($results->whatsapp_number, $msg);
             Mail::to($results->email)->send(new EmailNotification($results->first_name, $token));
 
-            $event_amount = config('services.paystack.amount');
-            Payment::makePayment($results->email, $event_amount, 'registrant_page');
+            if(($request['nationality_id'] == 64) || ($request['residence_country_id'] == 64)){
+                $event_amount = config('services.paystack.amount');
+                Payment::makePayment($results->email, $event_amount, 'registrant_page');
+            }
 
             return redirect(route('registrant_page', absolute: false))->with("success", "Registration Successful!!. Check your SMS/Whatsapp for further instructions.");
         }
