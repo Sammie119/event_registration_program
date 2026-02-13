@@ -87,18 +87,19 @@ class RegistrantController extends Controller
      */
     public function create(Request $request)
     {
-//        dd($request['reference']);
-        $response = (new PayStackPayment())->verifyTransaction($request['reference']);
+        if(isset($request['reference'])){
+            $response = (new PayStackPayment())->verifyTransaction($request['reference']);
 
-        if ($response['status'] && $response['data']['status'] === 'success') {
-            $paymentDetails = $response['data'];
+            if ($response['status'] && $response['data']['status'] === 'success') {
+                $paymentDetails = $response['data'];
 
-            $data = Registrant::where('email', $paymentDetails['customer']['email'])->first()->toArray();
+                $data = Registrant::where('email', $paymentDetails['customer']['email'])->first()->toArray();
 
-            $count = OnlinePayment::where('customer_id', $paymentDetails['id'])->count();
+                $count = OnlinePayment::where('customer_id', $paymentDetails['id'])->count();
 
-            if($count === 0){
-                Payment::paymentReceipt($data, $paymentDetails, $response);
+                if ($count === 0) {
+                    Payment::paymentReceipt($data, $paymentDetails, $response);
+                }
             }
         }
 
