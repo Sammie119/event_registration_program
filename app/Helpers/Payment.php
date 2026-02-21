@@ -59,6 +59,8 @@ class Payment
             'reference' => $paymentDetails['reference'],
         ],[
             'reg_id' => $data['id'],
+            'full_name' => $data['first_name'].' '.$data['surname'],
+            'contact' => $data['phone_number'],
 //            'accommodation_type' => null,
 //            'accommodation_fee' => null,
 //            'special_food' => null,

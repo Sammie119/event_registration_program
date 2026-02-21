@@ -42,7 +42,6 @@ class RegistrantController extends Controller
             'date_of_birth' => $request['date_of_birth'],
             'gender' => $request['gender'],
             'phone_number' => $request['phone_number'],
-            'whatsapp_number' => $request['whatsapp_number'],
         ],[
             'title' => $request['title'],
             'first_name' => $request['first_name'],
@@ -53,12 +52,6 @@ class RegistrantController extends Controller
             'address' => $request['address'],
             'residence_country_id' => $request['residence_country_id'],
             'languages_spoken' => $request['languages_spoken'],
-            'passport_number' => $request['passport_number'],
-            'issue_date' => $request['issue_date'],
-            'expiry_date' => $request['expiry_date'],
-            'emergency_contacts_name' => $request['emergency_contacts_name'],
-            'emergency_contacts_relationship' => $request['emergency_contacts_relationship'],
-            'emergency_contacts_phone_number' => $request['emergency_contacts_phone_number'],
             'disability' => $request['disability'],
             'special_needs' => $request['special_needs'],
             'token' => $token,
@@ -66,9 +59,6 @@ class RegistrantController extends Controller
 
 
         if($results){
-                $msg = 'Congrats ' . $results->first_name . ' for your interest in this Event. Registration is incomplete until full payment of the Event registration fee is made.'."\n". 'Login token : ' . $token;
-
-//            WhatsappNotificationJob::dispatch($results->whatsapp_number, $msg);
             Mail::to($results->email)->send(new EmailNotification($results->first_name, $token));
 
             if(($request['nationality_id'] == 64) || ($request['residence_country_id'] == 64)){
@@ -109,9 +99,10 @@ class RegistrantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Registrant $registrant)
+    public function show()
     {
-        return view('registration_complete');
+        $data['rooms'] = Room::selectRaw("id, concat(name, ' - USD', price) as name")->where('occupants_left', '>', 0)->get()->toArray();
+        return view('registration_complete', $data);
     }
 
     /**
@@ -141,28 +132,41 @@ class RegistrantController extends Controller
      */
     public function registrationComplete(Request $request)
     {
-        $reg = Registrant::find($request['reg_id']);
-        $room = Room::find($request['room_id']);
+        $result = explode(" ", $request['name']);
 
-        $payment = OnlinePayment::where('reg_id', $request['reg_id'])->first();
+        $email = strtolower(trim($result[0]).'@gmail.com');
+        $request->session()->put('data', [
+            'full_name' => trim($request['name']),
+            'phone_number' => $request['contact']
+        ]);
+        $room = Room::find($request['room_id']);
 
         if ($room->occupants_left == 0) {
             return back()->with('error', "Room is not available at the moment.");
         }
 
-        if(is_null($payment->accommodation_type)) {
-            if($payment){
-                OnlinePayment::find($payment->id)->update([
-                    'accommodation_type' => $room->slug,
-                    'special_food' => $request['food_preference'],
-                ]);
-            }
-        }
+        OnlinePayment::firstOrCreate([
+                'full_name' => $email,
+                'reference' => $request['contact'],
+            ], [
+                'payment_mode' => 'channel',
+                'reg_id' => 0,
+                'contact' => 'phone_number',
+                'accommodation_type' => $room->slug,
+                'transaction_no' => 0,
+                'amount_paid' => 0.10,
+                'date_paid' => date('Y-m-d'),
+                'comment' => 'message',
+                'approved' => 0,
+                'approved_at' => date('Y-m-d'),
+                'event_total_fee' => 0.10,
+                'customer_id' => 0,
+                'payment_status' => 0,
+        ]);
+//        Payment::makePayment($email, 10, 'registrant_complete_return');
+        Payment::makePayment($email, $room->price, 'registrant_complete_return');
 
-        Payment::makePayment($reg->email, $room->price, 'registrant_complete');
-//        Payment::makePayment($reg->email, 10, 'registrant_complete_return');
-
-//        return redirect(route('registrant_complete_return', absolute: false))->with("success", "Successful!!!.");
+        return 0;
     }
 
     public function registrationCompleteReturn(Request $request)
@@ -173,16 +177,30 @@ class RegistrantController extends Controller
             if ($response['status'] && $response['data']['status'] === 'success') {
                 $paymentDetails = $response['data'];
 
-                $data = Registrant::where('email', $paymentDetails['customer']['email'])->first();
+                $data = $request->session()->get('data');
 
-                $payment = OnlinePayment::where('reg_id', $data->id)->first();
+                $payment = OnlinePayment::where('full_name', $paymentDetails['customer']['email'])->first();
 
-                if($payment->accommodation_fee <= 0) {
-                    if($payment){
-                        OnlinePayment::find($payment->id)->update([
-                            'accommodation_fee' => $paymentDetails['amount'] / 100,
-                        ]);
-                    }
+//                dd($data, $payment);
+
+                if($payment) {
+                    OnlinePayment::find($payment->id)->update([
+                        'payment_mode' => $paymentDetails['channel'],
+                        'reference' => $paymentDetails['reference'],
+                        'reg_id' => 0,
+                        'full_name' => $data['full_name'],
+                        'contact' => $data['phone_number'],
+                        'accommodation_fee' => $paymentDetails['amount'] / 100,
+                        'transaction_no' => $paymentDetails['id'],
+                        'amount_paid' => $paymentDetails['amount'] / 100,
+                        'date_paid' => date('Y-m-d', strtotime($paymentDetails['transaction_date'])),
+                        'comment' => $response['message'],
+                        'approved' => 1,
+                        'approved_at' => date('Y-m-d', strtotime($paymentDetails['paid_at'])),
+                        'event_total_fee' => $paymentDetails['amount'] / 100,
+                        'customer_id' => $paymentDetails['customer']['id'],
+                        'payment_status' => $response['status'],
+                    ]);
 
                     $room = Room::where('slug',$payment->accommodation_type)->first();
 
@@ -191,9 +209,12 @@ class RegistrantController extends Controller
                     }
                 }
 
-                $detail = OnlinePayment::find($payment->id);
+                $detail = OnlinePayment::where('reference', $paymentDetails['reference'])->first();
 
-                return view('receipt', ['data' => $data, 'payment' => $detail]);
+//                return 'Room Payment Successful';
+                if($detail)
+                    return view('receipt', ['payment' => $detail]);
+                return "No Receipt Found";
             }
         } else {
             return "No Receipt Found";

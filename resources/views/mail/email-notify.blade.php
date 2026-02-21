@@ -32,8 +32,15 @@
                                         <div class="form-floating">
                                             <h2>Hi {{ $name }},</h2>
 
-                                            <p>Congrats for your interest in this Event. Registration is incomplete until full payment of the Event registration fee is made</p>
-                                            <h4>Login token : {{ $token }}</h4>
+                                            <p>Thank you for successfully registering for our upcoming event dated <strong>May 14th – 16th, 2026</strong></p>
+
+                                            <p>We are truly excited about your participation and look forward to having you join us. Your registration has been received and confirmed,
+                                                and we are confident that this event will be impactful, enriching, and well worth your time.</p>
+
+                                            <a href="https://letafricagoconference.tacms.net/book_room">Click here to book your room</a>
+
+                                            <p>Thank you once again for being part of this event. We look forward to welcoming you.</p>
+
                                         </div>
                                     </div>
                                 </div>

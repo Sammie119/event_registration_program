@@ -58,13 +58,10 @@
             <table class="table table-borderless">
                 <thead>
                     <tr>
-                        <th scope="col">Name: {{ $data->first_name }} {{ $data->surname }}</th>
+                        <th scope="col">Name: {{ $payment->full_name }}</th>
                     </tr>
                     <tr>
-                        <th scope="col">Address: {{ $data->address }}</th>
-                    </tr>
-                    <tr>
-                        <th scope="col">Contact: {{ $data->phone_number }}</th>
+                        <th scope="col">Contact: {{ $payment->contact }}</th>
                     </tr>
                 </thead>
             </table>
@@ -74,27 +71,20 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Fee</th>
+                        <th scope="col">Room Description</th>
+                        <th scope="col">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Registration Fee</td>
-                        <td>USD {{ $payment->amount_paid }}</td>
-                    </tr>
-                    <tr>
                         <th scope="row">2</th>
                         <td>{{ $payment->accommodation_type }}</td>
-                        <td>USD {{ number_format($payment->accommodation_fee, 2) }}</td>
+                        <td>GHS {{ number_format($payment->accommodation_fee, 2) }}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th></th>
-                        <th>Total</th>
-                        <th>USD {{ number_format($payment->amount_paid + $payment->accommodation_fee, 2) }}</th>
+                        <th colspan="3" style="text-align: center;">Thank You for Registering for this Event</th>
                     </tr>
                 </tfoot>
             </table>
