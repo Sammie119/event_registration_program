@@ -5,7 +5,7 @@
 
         <!-- Default Accordion -->
         <div class="accordion h-100 d-flex align-items-center justify-content-center">
-            <section class="section" style="width: 40%;">
+            <section class="section mobile">
                 @if (session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -20,7 +20,7 @@
 
 {{--                                    @include('includes.modal')--}}
 
-                                <div class="col-md-12">
+                                <div class="col-12 col-md-6">
                                     <x-input-text
                                         type="text"
                                         name="name"
@@ -29,7 +29,7 @@
                                         value=""
                                     />
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-12 col-md-6">
                                     <x-input-text
                                         type="text"
                                         name="contact"
@@ -38,7 +38,7 @@
                                         value=""
                                     />
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-12 col-md-6">
                                     <x-input-select
                                         :options="$rooms"
                                         :selected="0"
@@ -48,7 +48,7 @@
                                         label="Select Accommodation"
                                     />
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-12 col-md-6">
                                     <x-input-text
                                         type="text"
                                         name="food_preference"
