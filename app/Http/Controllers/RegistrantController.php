@@ -49,7 +49,7 @@ class RegistrantController extends Controller
             'marital_status' => $request['marital_status'],
             'nationality_id' => $request['nationality_id'],
             'email' => $request['email'],
-            'address' => $request['address'],
+            'address' => 'Address',
             'residence_country_id' => $request['residence_country_id'],
             'languages_spoken' => $request['languages_spoken'],
             'disability' => $request['disability'],

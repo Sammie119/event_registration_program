@@ -174,16 +174,16 @@
                                     label="Do you have a Disability?"
                                 />
                             </div>
-                            <div class="col-md-6">
-                                <x-input-text
-                                    type="text"
-                                    name="address"
-                                    required="true"
-                                    label="Address"
-                                    value=""
-                                />
-                            </div>
-                            <div class="col-md-6">
+{{--                            <div class="col-md-6">--}}
+{{--                                <x-input-text--}}
+{{--                                    type="text"--}}
+{{--                                    name="address"--}}
+{{--                                    required="true"--}}
+{{--                                    label="Address"--}}
+{{--                                    value=""--}}
+{{--                                />--}}
+{{--                            </div>--}}
+                            <div class="col-md-12">
                                 <x-input-text
                                     type="text"
                                     name="special_needs"
