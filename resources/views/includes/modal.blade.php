@@ -31,29 +31,48 @@
                             <th scope="col">Fee</th>
                         </tr>
                         </thead>
+                            <?php
+                                $rooms = App\Models\Room::orderBy('id', 'asc')->get();
+                            ?>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td nowrap>Category A</td>
-                                <td nowrap>
-                                    <img src="{{ asset('assets/img/rooms/cat_a_1.jpg') }}" width="50%" alt="Room Image">
-                                    <img src="{{ asset('assets/img/rooms/cat_a_2.jpg') }}" width="50%" alt="Room Image">
-                                </td>
-                                <td nowrap>USD 400 <br>
-                                    (For 4 Nights)
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td nowrap>Category B <br> (2 Persons in a Room)</td>
-                                <td nowrap>
-                                    <img src="{{ asset('assets/img/rooms/cat_b_1.jpg') }}" width="50%" alt="Room Image">
-                                    <img src="{{ asset('assets/img/rooms/cat_b_2.jpg') }}" width="50%" alt="Room Image">
-                                </td>
-                                <td nowrap>USD 100 <br>
-                                    (For 4 Nights)
-                                </td>
-                            </tr>
+                            @foreach($rooms as $key => $room)
+                                <tr>
+                                    <th scope="row">{{ ++$key }}</th>
+                                    <td nowrap>{!! nl2br($room->name) !!}</td>
+                                    <td nowrap>
+                                        <?php
+                                            $i = $key === 1 ? 'a' : 'b';
+                                        ?>
+                                        <img src="{{ asset('assets/img/rooms/cat_'.$i.'_1.jpg') }}" width="50%" alt="Room Image">
+                                        <img src="{{ asset('assets/img/rooms/cat_'.$i.'_2.jpg') }}" width="50%" alt="Room Image">
+                                    </td>
+                                    <td nowrap>USD {{ $room->price }} <br>
+                                        (For 4 Nights)
+                                    </td>
+                                </tr>
+                            @endforeach
+{{--                        <tr>--}}
+{{--                            <th scope="row">1</th>--}}
+{{--                            <td nowrap>Category A</td>--}}
+{{--                            <td nowrap>--}}
+{{--                                <img src="{{ asset('assets/img/rooms/cat_a_1.jpg') }}" width="50%" alt="Room Image">--}}
+{{--                                <img src="{{ asset('assets/img/rooms/cat_a_2.jpg') }}" width="50%" alt="Room Image">--}}
+{{--                            </td>--}}
+{{--                            <td nowrap>USD 400 <br>--}}
+{{--                                (For 4 Nights)--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <th scope="row">2</th>--}}
+{{--                            <td nowrap>Category B <br> (2 Persons in a Room)</td>--}}
+{{--                            <td nowrap>--}}
+{{--                                <img src="{{ asset('assets/img/rooms/cat_b_1.jpg') }}" width="50%" alt="Room Image">--}}
+{{--                                <img src="{{ asset('assets/img/rooms/cat_b_2.jpg') }}" width="50%" alt="Room Image">--}}
+{{--                            </td>--}}
+{{--                            <td nowrap>USD 100 <br>--}}
+{{--                                (For 4 Nights)--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
                         </tbody>
                     </table>
                 @endif
