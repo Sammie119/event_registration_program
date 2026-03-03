@@ -15,11 +15,8 @@
                     @csrf
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><h3>Complete Registration</h3></h5>
+                            <h5 class="card-title"><h3>Book Accommodation</h3></h5>
                             <div class="row g-3">
-
-{{--                                    @include('includes.modal')--}}
-
                                 <div class="col-12 col-md-6">
                                     <x-input-text
                                         type="text"
@@ -57,6 +54,8 @@
                                         value=""
                                     />
                                 </div>
+
+                                @include('includes.modal')
 
                                 <div class="modal-footer">
 {{--                                        <x-button--}}
