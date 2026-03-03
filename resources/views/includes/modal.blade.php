@@ -45,7 +45,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">2</th>
-                                <td nowrap>Category B <br> (Shared Room)</td>
+                                <td nowrap>Category B <br> (2 Persons in a Room)</td>
                                 <td nowrap>
                                     <img src="{{ asset('assets/img/rooms/cat_b_1.jpg') }}" width="50%" alt="Room Image">
                                     <img src="{{ asset('assets/img/rooms/cat_b_2.jpg') }}" width="50%" alt="Room Image">
