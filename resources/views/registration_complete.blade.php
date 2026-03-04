@@ -16,10 +16,10 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row g-3">
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-6 col-lg-6">
                                     <img src="{{ asset('assets/img/let_africa_go.jpeg') }}" alt="flayer" height="90%" class="rounded img-fluid">
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-6 col-lg-6">
                                     <h5 class="card-title"><h3>Book Accommodation</h3></h5>
                                     <div class="col-12 mb-3">
                                         <x-input-text
