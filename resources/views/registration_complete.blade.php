@@ -15,62 +15,67 @@
                     @csrf
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><h3>Book Accommodation</h3></h5>
                             <div class="row g-3">
                                 <div class="col-12 col-md-6">
-                                    <x-input-text
-                                        type="text"
-                                        name="name"
-                                        required="true"
-                                        label="Full Name"
-                                        value=""
-                                    />
+                                    <img src="{{ asset('assets/img/let_africa_go.jpeg') }}" alt="flayer" height="90%" class="rounded img-fluid">
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-input-text
-                                        type="text"
-                                        name="contact"
-                                        required="true"
-                                        label="Contact Number"
-                                        value=""
-                                    />
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <x-input-select
-                                        :options="$rooms"
-                                        :selected="0"
-                                        name="room_id"
-                                        :type="0"
-                                        required="true"
-                                        label="Select Accommodation"
-                                    />
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <x-input-text
-                                        type="text"
-                                        name="food_preference"
-                                        required="true"
-                                        label="Any Special Dietary Requirements?"
-                                        value=""
-                                    />
-                                </div>
+                                    <h5 class="card-title"><h3>Book Accommodation</h3></h5>
+                                    <div class="col-12 mb-3">
+                                        <x-input-text
+                                            type="text"
+                                            name="name"
+                                            required="true"
+                                            label="Full Name"
+                                            value=""
+                                        />
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <x-input-text
+                                            type="text"
+                                            name="contact"
+                                            required="true"
+                                            label="Contact Number"
+                                            value=""
+                                        />
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <x-input-select
+                                            :options="$rooms"
+                                            :selected="0"
+                                            name="room_id"
+                                            :type="0"
+                                            required="true"
+                                            label="Select Accommodation"
+                                        />
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <x-input-text
+                                            type="text"
+                                            name="food_preference"
+                                            required="true"
+                                            label="Any Special Dietary Requirements?"
+                                            value=""
+                                        />
+                                    </div>
 
-                                @include('includes.modal')
+                                    @include('includes.modal')
 
-                                <div class="modal-footer">
-{{--                                        <x-button--}}
-{{--                                            type='button'--}}
-{{--                                            class="btn-danger rounded-pill"--}}
-{{--                                            icon="bi bi-arrow-left"--}}
-{{--                                            name="Back"--}}
-{{--                                            onclick="window.location.href='/'"--}}
-{{--                                        />--}}
-                                    <x-button
-                                        type='submit'
-                                        class="btn-success rounded-pill"
-                                        icon="bi bi-save2"
-                                        name="Submit"
-                                    />
+                                    <div class="modal-footer">
+                                        {{--                                        <x-button--}}
+                                        {{--                                            type='button'--}}
+                                        {{--                                            class="btn-danger rounded-pill"--}}
+                                        {{--                                            icon="bi bi-arrow-left"--}}
+                                        {{--                                            name="Back"--}}
+                                        {{--                                            onclick="window.location.href='/'"--}}
+                                        {{--                                        />--}}
+                                        <x-button
+                                            type='submit'
+                                            class="btn-success rounded-pill"
+                                            icon="bi bi-save2"
+                                            name="Submit"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
