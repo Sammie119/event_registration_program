@@ -40,6 +40,15 @@
                                         />
                                     </div>
                                     <div class="col-12 mb-3">
+                                        <x-input-text
+                                            type="text"
+                                            name="email"
+                                            required="true"
+                                            label="Email"
+                                            value=""
+                                        />
+                                    </div>
+                                    <div class="col-12 mb-3">
                                         <x-input-select
                                             :options="$rooms"
                                             :selected="0"

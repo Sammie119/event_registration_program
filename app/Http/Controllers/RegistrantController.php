@@ -63,7 +63,9 @@ class RegistrantController extends Controller
 
             if(($request['nationality_id'] == 64) || ($request['residence_country_id'] == 64)){
                 $event_amount = config('services.paystack.amount');
-                Payment::makePayment($results->email, $event_amount, 'registrant_page');
+                if($event_amount > 0){
+                    Payment::makePayment($results->email, $event_amount, 'registrant_page');
+                }
             }
 
             return redirect(route('registrant_page', absolute: false))->with("success", "Registration Successful!!. Check your SMS/Whatsapp for further instructions.");
@@ -134,7 +136,7 @@ class RegistrantController extends Controller
     {
         $result = explode(" ", $request['name']);
 
-        $email = strtolower(trim($result[0]).'@gmail.com');
+        $email = $request['email'];
         $request->session()->put('data', [
             'full_name' => trim($request['name']),
             'phone_number' => $request['contact']
