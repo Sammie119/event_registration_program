@@ -9,7 +9,7 @@ class Payment
 {
     public static function makePayment($email, $amount, $callback_url)
     {
-//        $amount = ceil(Utils::exchange_rate($amount) * 100);
+//        $amount = ceil(0.01 * 100);
         $amount = ceil(($amount * 12) * 100);
 
         $url = config('services.paystack.payment_url');
@@ -17,7 +17,7 @@ class Payment
         $fields = [
             'email' => $email,
             'amount' => $amount,
-            'subaccount' => "ACCT_eh29f1d1lhpvx6v",
+            'subaccount' => "ACCT_f4kp67u7sbtd0x8",
             'callback_url' => route("$callback_url"),
         ];
 

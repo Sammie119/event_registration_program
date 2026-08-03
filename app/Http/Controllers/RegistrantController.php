@@ -103,7 +103,9 @@ class RegistrantController extends Controller
      */
     public function show()
     {
-        $data['rooms'] = Room::selectRaw("id, concat(name, ' - USD', price) as name")->where('occupants_left', '>', 0)->get()->toArray();
+        $data['rooms'] = Room::selectRaw("id, concat(name, ' - USD', price) as name")->where('id', '!=', 4)->get()->toArray();
+        $data['rooms_gh'] = Room::selectRaw("id, concat(name, ' - USD', price) as name")->get()->toArray();
+        $data['country'] = Country::selectRaw("id, name")->get()->toArray();
         return view('registration_complete', $data);
     }
 
@@ -134,8 +136,7 @@ class RegistrantController extends Controller
      */
     public function registrationComplete(Request $request)
     {
-        $result = explode(" ", $request['name']);
-
+//        dd($request->all());Category B - Shared
         $email = $request['email'];
         $request->session()->put('data', [
             'full_name' => trim($request['name']),
@@ -143,9 +144,9 @@ class RegistrantController extends Controller
         ]);
         $room = Room::find($request['room_id']);
 
-        if ($room->occupants_left == 0) {
-            return back()->with('error', "Room is not available at the moment.");
-        }
+//        if ($room->occupants_left == 0) {
+//            return back()->with('error', "Room is not available at the moment.");
+//        }
 
         OnlinePayment::firstOrCreate([
                 'full_name' => $email,

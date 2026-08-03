@@ -36,11 +36,11 @@
     <main class="container">
         <div class="d-flex justify-content-center py-4">
             <a class="logo d-flex align-items-center w-auto">
-                <img src="https://letafricago.org/extensions/uploads/sites/522/2024/11/logo-removebg-preview.png" alt="">
+                <img src="{{ asset('assets/img/awc.jpg') }}" alt="flayer">
             </a>
         </div><!-- End Logo -->
         <div class="d-flex justify-content-center">
-            <h3>LET AFRICA GO CONFERENCE 2026</h3>
+            <h3>APOSTOLIC WORLD CONFERENCE 2026</h3>
         </div>
 
         <div class="pagetitle mb-4 row">
