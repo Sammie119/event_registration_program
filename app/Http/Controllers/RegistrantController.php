@@ -105,7 +105,7 @@ class RegistrantController extends Controller
     {
         $data['rooms'] = Room::selectRaw("id, concat(name, ' - USD', price) as name")->where('id', '!=', 4)->get()->toArray();
         $data['rooms_gh'] = Room::selectRaw("id, concat(name, ' - USD', price) as name")->get()->toArray();
-        $data['country'] = Country::selectRaw("id, name")->get()->toArray();
+        $data['country'] = Country::selectRaw("id, name, code")->get()->toArray();
         return view('registration_complete', $data);
     }
 
@@ -138,9 +138,11 @@ class RegistrantController extends Controller
     {
 //        dd($request->all());Category B - Shared
         $email = $request['email'];
+        $fullName = trim(trim($request['other_names']) . ' ' . trim($request['surname']));
+        $contact = trim($request['dialing_code']) . trim($request['phone_number']);
         $request->session()->put('data', [
-            'full_name' => trim($request['name']),
-            'phone_number' => $request['contact']
+            'full_name' => $fullName,
+            'phone_number' => $contact
         ]);
         $room = Room::find($request['room_id']);
 
@@ -150,7 +152,7 @@ class RegistrantController extends Controller
 
         OnlinePayment::firstOrCreate([
                 'full_name' => $email,
-                'reference' => $request['contact'],
+                'reference' => $contact,
             ], [
                 'payment_mode' => 'channel',
                 'reg_id' => 0,

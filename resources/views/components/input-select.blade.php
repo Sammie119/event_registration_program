@@ -1,4 +1,4 @@
-@props(['options'=> [], 'selected' => 0, 'type' => 0, 'values' => [], 'required' => false, 'name', 'label', 'get_name' =>''])
+@props(['options'=> [], 'selected' => 0, 'type' => 0, 'values' => [], 'required' => false, 'name', 'label', 'get_name' =>'', 'codes' => []])
 <div class="form-floating form-floating-custom">
 
     <select
@@ -10,7 +10,7 @@
         <option selected disabled value="">--Select--</option>
         @if($type == 0)
             @foreach ($options as $option)
-                <option @if ($selected == $option['id']) selected @endif value="{{ $option['id'] }}">{{ $option['name'] }}</option>
+                <option @if ($selected == $option['id']) selected @endif value="{{ $option['id'] }}" @if(isset($codes[$option['id']]) && $codes[$option['id']] !== null) data-code="{{ $codes[$option['id']] }}" @endif>{{ $option['name'] }}</option>
             @endforeach
 
         @elseif($type == 'role')
