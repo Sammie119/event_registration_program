@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-12 col-md-6 col-lg-6">
-                                    <img src="{{ asset('assets/img/acc.jpeg') }}" alt="flayer" height="100%" class="rounded img-fluid mt-4">
+                                    <img src="{{ asset('assets/img/acc_data.jpeg') }}" alt="flayer" height="100%" class="rounded img-fluid mt-4">
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-6">
                                     <h5 class="card-title"><h3>Book Accommodation</h3></h5>
